@@ -35,7 +35,7 @@ public class GuestProvider implements GuestService {
 
     @Override
     public Guest generateRandomGuest(LocalDate seasonStart, LocalDate seasonEnd) {
-        Long daysBetween = DAYS.between(seasonStart, seasonEnd);
+        long daysBetween = DAYS.between(seasonStart, seasonEnd);
         LocalDate randomCheckInDate = randomCheckInOrOutDate(seasonStart, seasonEnd);
         LocalDate randomMaxCheckOutDate = randomCheckInDate.plusDays(daysBetween >= 7 ? 7 : daysBetween);
         LocalDate randomCheckOutDate = randomCheckInOrOutDate(randomCheckInDate, randomMaxCheckOutDate);
