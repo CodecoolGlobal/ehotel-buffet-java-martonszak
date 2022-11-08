@@ -1,5 +1,7 @@
 package com.codecool.ehotel.model;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
@@ -9,6 +11,10 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BuffetTest {
+
+    List<Meal> meals = new ArrayList<>();
+    LocalTime tempTime;
+    Buffet testBuffet;
 
     @Test
     void findPortions() {
@@ -38,11 +44,12 @@ class BuffetTest {
 
     }
 
-    @Test
-    void getMeals() {
-        LocalTime tempTime = LocalTime.parse("06:00");
+    @BeforeEach
+    void createData() {
 
-        List<Meal> meals = List.of(
+        tempTime = LocalTime.parse("06:00");
+
+        meals.addAll(List.of(
                 new Meal(MealType.SCRAMBLED_EGGS, 1, tempTime),
                 new Meal(MealType.SUNNY_SIDE_UP, 1, tempTime),
                 new Meal(MealType.FRIED_SAUSAGE, 1, tempTime),
@@ -54,12 +61,16 @@ class BuffetTest {
                 new Meal(MealType.BUN, 1, tempTime),
                 new Meal(MealType.CEREAL, 1, tempTime),
                 new Meal(MealType.MILK, 1, tempTime)
-        );
+        ));
 
-        Buffet testBuffet = new Buffet(meals);
+        testBuffet = new Buffet(meals);
+
+    }
+
+    @Test
+    void getMeals() {
 
         List<Meal> result = testBuffet.getMeals();
-
         assertEquals(meals, result);
 
     }
@@ -67,50 +78,21 @@ class BuffetTest {
     @Test
     void addMeal() {
 
-        LocalTime tempTime = LocalTime.parse("06:00");
-
-        List<Meal> meals = new ArrayList<>();
-        meals.add(new Meal(MealType.SCRAMBLED_EGGS, 1, tempTime));
-        meals.add(new Meal(MealType.SUNNY_SIDE_UP, 1, tempTime));
-        meals.add(new Meal(MealType.FRIED_SAUSAGE, 1, tempTime));
-        meals.add(new Meal(MealType.FRIED_BACON, 1, tempTime));
-        meals.add(new Meal(MealType.PANCAKE, 1, tempTime));
-        meals.add(new Meal(MealType.CROISSANT, 1, tempTime));
-        meals.add(new Meal(MealType.MASHED_POTATO, 1, tempTime));
-        meals.add(new Meal(MealType.MUFFIN, 1, tempTime));
-        meals.add(new Meal(MealType.BUN, 1, tempTime));
-        meals.add(new Meal(MealType.CEREAL, 1, tempTime));
-        meals.add(new Meal(MealType.MILK, 1, tempTime));
-
-        Buffet testBuffet = new Buffet(meals);
+        assertEquals(11, testBuffet.getMeals().size());
 
         Meal testMeal = new Meal(MealType.MUFFIN, 1, tempTime);
 
         testBuffet.addMeal(testMeal);
 
         assertEquals(12, testBuffet.getMeals().size());
+        assertEquals(testMeal, testBuffet.getMeals().get(11));
 
     }
 
     @Test
     void removeMeal() {
 
-        LocalTime tempTime = LocalTime.parse("06:00");
-
-        List<Meal> meals = new ArrayList<>();
-        meals.add(new Meal(MealType.SCRAMBLED_EGGS, 1, tempTime));
-        meals.add(new Meal(MealType.SUNNY_SIDE_UP, 1, tempTime));
-        meals.add(new Meal(MealType.FRIED_SAUSAGE, 1, tempTime));
-        meals.add(new Meal(MealType.FRIED_BACON, 1, tempTime));
-        meals.add(new Meal(MealType.PANCAKE, 1, tempTime));
-        meals.add(new Meal(MealType.CROISSANT, 1, tempTime));
-        meals.add(new Meal(MealType.MASHED_POTATO, 1, tempTime));
-        meals.add(new Meal(MealType.MUFFIN, 1, tempTime));
-        meals.add(new Meal(MealType.BUN, 1, tempTime));
-        meals.add(new Meal(MealType.CEREAL, 1, tempTime));
-        meals.add(new Meal(MealType.MILK, 1, tempTime));
-
-        Buffet testBuffet = new Buffet(meals);
+        assertEquals(11, testBuffet.getMeals().size());
 
         Meal testMeal = new Meal(MealType.MUFFIN, 1, tempTime);
 
