@@ -25,7 +25,19 @@ public record Buffet(List<Meal> meals) {
     }
 
     public void removeMeal(Meal meal) {
-        meals.remove(meal);
+        /*removeIF
+        for (Meal element : meals) {
+            if (element.getMealType().equals(meal.getMealType())
+                    && element.getAmount() == meal.getAmount()
+                    && element.getTimeStamp().equals(meal.getTimeStamp())) {
+                meals.remove(element);
+            }
+        }*/
+
+        meals.removeIf(element -> element.getMealType().equals(meal.getMealType())
+                && element.getAmount() == meal.getAmount()
+                && element.getTimeStamp().equals(meal.getTimeStamp()));
+
     }
 
 }
