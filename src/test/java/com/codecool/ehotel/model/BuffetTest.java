@@ -16,6 +16,29 @@ class BuffetTest {
     LocalTime tempTime;
     Buffet testBuffet;
 
+    @BeforeEach
+    void createData() {
+
+        tempTime = LocalTime.parse("06:00");
+
+        meals.addAll(List.of(
+                new Meal(MealType.SCRAMBLED_EGGS, 1, tempTime),
+                new Meal(MealType.SUNNY_SIDE_UP, 1, tempTime),
+                new Meal(MealType.FRIED_SAUSAGE, 1, tempTime),
+                new Meal(MealType.FRIED_BACON, 1, tempTime),
+                new Meal(MealType.PANCAKE, 1, tempTime),
+                new Meal(MealType.CROISSANT, 1, tempTime),
+                new Meal(MealType.MASHED_POTATO, 1, tempTime),
+                new Meal(MealType.MUFFIN, 1, tempTime),
+                new Meal(MealType.BUN, 1, tempTime),
+                new Meal(MealType.CEREAL, 1, tempTime),
+                new Meal(MealType.MILK, 1, tempTime)
+        ));
+
+        testBuffet = new Buffet(meals);
+
+    }
+
     @Test
     void findPortions() {
 
@@ -41,29 +64,6 @@ class BuffetTest {
         List<Meal> result = testBuffet.findPortions(MealType.MILK);
 
         assertEquals(sortedMealsTestList, result);
-
-    }
-
-    @BeforeEach
-    void createData() {
-
-        tempTime = LocalTime.parse("06:00");
-
-        meals.addAll(List.of(
-                new Meal(MealType.SCRAMBLED_EGGS, 1, tempTime),
-                new Meal(MealType.SUNNY_SIDE_UP, 1, tempTime),
-                new Meal(MealType.FRIED_SAUSAGE, 1, tempTime),
-                new Meal(MealType.FRIED_BACON, 1, tempTime),
-                new Meal(MealType.PANCAKE, 1, tempTime),
-                new Meal(MealType.CROISSANT, 1, tempTime),
-                new Meal(MealType.MASHED_POTATO, 1, tempTime),
-                new Meal(MealType.MUFFIN, 1, tempTime),
-                new Meal(MealType.BUN, 1, tempTime),
-                new Meal(MealType.CEREAL, 1, tempTime),
-                new Meal(MealType.MILK, 1, tempTime)
-        ));
-
-        testBuffet = new Buffet(meals);
 
     }
 
@@ -96,9 +96,12 @@ class BuffetTest {
 
         Meal testMeal = new Meal(MealType.MUFFIN, 1, tempTime);
 
+        assertTrue(testBuffet.getMeals().contains(testMeal));
+
         testBuffet.removeMeal(testMeal);
 
         assertEquals(10, testBuffet.getMeals().size());
+        assertFalse(testBuffet.getMeals().contains(testMeal));
 
     }
 
