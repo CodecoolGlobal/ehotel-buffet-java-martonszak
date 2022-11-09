@@ -10,7 +10,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class EHotelBuffetApplication {
 
@@ -39,7 +38,7 @@ public class EHotelBuffetApplication {
             guests.add(guestProvider.generateRandomGuest(seasonStart, seasonEnd));
         }
         //guestProvider.listGuests(guestProvider.getGuestListOnActualDate(guests, actualDate));
-        Map<BreakfastCycle, Set<Guest>> breakfastCycleMap = buffetModifier.generateGuestsInBreakfastCycles(guestProvider.getGuestListOnActualDate(guests, actualDate));
+        Map<BreakfastCycle, List<Guest>> breakfastCycleMap = buffetModifier.generateGuestsInBreakfastCycles(guestProvider.getGuestListOnActualDate(guests, actualDate));
         for (BreakfastCycle breakfastCycle : buffetModifier.breakfastCycles) {
             System.out.println(breakfastCycle.cycleStart().toString() + "-" + breakfastCycle.cycleEnd().toString());
             guestProvider.listGuests(breakfastCycleMap.get(breakfastCycle).stream().toList());

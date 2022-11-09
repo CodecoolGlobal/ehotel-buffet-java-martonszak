@@ -17,11 +17,11 @@ public class BuffetModifier implements BuffetService {
         this.breakfastCycles = breakfastCycles;
     }
 
-    public Map<BreakfastCycle, Set<Guest>> generateGuestsInBreakfastCycles (List<Guest> guestsOnActualDate) {
+    public Map<BreakfastCycle, List<Guest>> generateGuestsInBreakfastCycles (List<Guest> guestsOnActualDate) {
         int breakfastCyclesSize = breakfastCycles.size();
-        Map<BreakfastCycle, Set<Guest>> breakfastCycleSetMap = new HashMap<>(breakfastCyclesSize);
+        Map<BreakfastCycle, List<Guest>> breakfastCycleSetMap = new HashMap<>(breakfastCyclesSize);
         for (BreakfastCycle breakfastCycle : breakfastCycles) {
-            breakfastCycleSetMap.put(breakfastCycle, new HashSet<>());
+            breakfastCycleSetMap.put(breakfastCycle, new ArrayList<>());
         }
         for (Guest guest : guestsOnActualDate) {
             Random random = new Random();
