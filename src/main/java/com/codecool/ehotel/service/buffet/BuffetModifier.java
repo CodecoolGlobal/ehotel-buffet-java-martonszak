@@ -18,7 +18,7 @@ public class BuffetModifier implements BuffetService {
         this.buffet = buffet;
     }
 
-    public Map<BreakfastCycle, List<Guest>> generateGuestsInBreakfastCycles (List<Guest> guestsOnActualDate) {
+    public Map<BreakfastCycle, List<Guest>> generateGuestsInBreakfastCycles(List<Guest> guestsOnActualDate) {
         int breakfastCyclesSize = breakfastCycles.size();
         Map<BreakfastCycle, List<Guest>> breakfastCycleSetMap = new HashMap<>(breakfastCyclesSize);
         for (BreakfastCycle breakfastCycle : breakfastCycles) {
@@ -63,7 +63,7 @@ public class BuffetModifier implements BuffetService {
         }
 
         for (Meal meal : buffet.getMeals()) {
-            if (meal.getMealType().getDurability() == mealDurability && meal.getTimeStamp().isBefore(timeLimit)) {
+            if (meal.getMealType().getDurability() == mealDurability && meal.getTimeStamp().isBefore(timeLimit) || meal.getTimeStamp().equals(timeLimit)) {
                 buffet.removeMeal(meal);
                 discardedMealsCost += meal.getMealType().getCost();
             }

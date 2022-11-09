@@ -39,8 +39,9 @@ public class EHotelBuffetApplication {
         for (int i = 0; i < guestNumber; i++) {
             guests.add(guestProvider.generateRandomGuest(seasonStart, seasonEnd));
         }
-        //guestProvider.listGuests(guestProvider.getGuestListOnActualDate(guests, actualDate));
-        Map<BreakfastCycle, List<Guest>> breakfastCycleMap = buffetModifier.generateGuestsInBreakfastCycles(guestProvider.getGuestListOnActualDate(guests, actualDate));
+
+        List<Guest> dailyGuests = guestProvider.getGuestListOnActualDate(guests, actualDate);
+        Map<BreakfastCycle, List<Guest>> breakfastCycleMap = buffetModifier.generateGuestsInBreakfastCycles(dailyGuests);
         for (BreakfastCycle breakfastCycle : buffetModifier.breakfastCycles) {
             System.out.println(breakfastCycle.cycleStart().toString() + "-" + breakfastCycle.cycleEnd().toString());
             guestProvider.listGuests(breakfastCycleMap.get(breakfastCycle).stream().toList());
