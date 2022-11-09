@@ -1,6 +1,7 @@
 package com.codecool.ehotel;
 
 import com.codecool.ehotel.model.BreakfastCycle;
+import com.codecool.ehotel.model.Buffet;
 import com.codecool.ehotel.model.Guest;
 import com.codecool.ehotel.service.buffet.BuffetModifier;
 import com.codecool.ehotel.service.guest.GuestProvider;
@@ -28,7 +29,8 @@ public class EHotelBuffetApplication {
                 new BreakfastCycle(LocalTime.parse("09:30"), LocalTime.parse("10:00"))
         );
         LocalDate actualDate = LocalDate.parse("2022-12-31");
-        BuffetModifier buffetModifier = new BuffetModifier(actualDate, breakfastCycleList);
+        Buffet buffet = new Buffet(new ArrayList<>());
+        BuffetModifier buffetModifier = new BuffetModifier(actualDate, breakfastCycleList, buffet);
         // Generate guests for the season
         List<Guest> guests = new ArrayList<>();
         int guestNumber = 50;

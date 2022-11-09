@@ -7,21 +7,15 @@ import java.time.LocalTime;
 import java.util.*;
 
 public class BuffetModifier implements BuffetService {
-
     Buffet buffet;
-
     public int wastedFood = 0;
-
-    public BuffetModifier(Buffet buffet) {
-        this.buffet = buffet;
-
     public LocalDate date;
-
     public List<BreakfastCycle> breakfastCycles;
 
-    public BuffetModifier(LocalDate date, List<BreakfastCycle> breakfastCycles) {
+    public BuffetModifier(LocalDate date, List<BreakfastCycle> breakfastCycles, Buffet buffet) {
         this.date = date;
         this.breakfastCycles = breakfastCycles;
+        this.buffet = buffet;
     }
 
     public Map<BreakfastCycle, List<Guest>> generateGuestsInBreakfastCycles (List<Guest> guestsOnActualDate) {
