@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class EHotelBuffetApplication {
 
@@ -36,7 +38,12 @@ public class EHotelBuffetApplication {
         for (int i = 0; i < guestNumber; i++) {
             guests.add(guestProvider.generateRandomGuest(seasonStart, seasonEnd));
         }
-        guestProvider.listGuests(guestProvider.getGuestListOnActualDate(guests, actualDate));
+        //guestProvider.listGuests(guestProvider.getGuestListOnActualDate(guests, actualDate));
+        Map<BreakfastCycle, Set<Guest>> breakfastCycleMap = buffetModifier.generateGuestsInBreakfastCycles(guestProvider.getGuestListOnActualDate(guests, actualDate));
+        for (BreakfastCycle breakfastCycle : buffetModifier.breakfastCycles) {
+            System.out.println(breakfastCycle.cycleStart().toString() + "-" + breakfastCycle.cycleEnd().toString());
+            guestProvider.listGuests(breakfastCycleMap.get(breakfastCycle).stream().toList());
+        }
         // Run breakfast buffet
 
 
