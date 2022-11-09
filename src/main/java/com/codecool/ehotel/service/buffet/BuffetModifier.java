@@ -8,6 +8,13 @@ import java.util.*;
 
 public class BuffetModifier implements BuffetService {
 
+    Buffet buffet;
+
+    public int wastedFood = 0;
+
+    public BuffetModifier(Buffet buffet) {
+        this.buffet = buffet;
+
     public LocalDate date;
 
     public List<BreakfastCycle> breakfastCycles;
@@ -28,6 +35,7 @@ public class BuffetModifier implements BuffetService {
             breakfastCycleSetMap.get(breakfastCycles.get(random.nextInt(breakfastCyclesSize))).add(guest);
         }
         return breakfastCycleSetMap;
+
     }
 
     @Override
@@ -51,7 +59,23 @@ public class BuffetModifier implements BuffetService {
     @Override
     public int collectWaste(MealDurability mealDurability, LocalTime timeStamp) {
 
-        return 0; //The method needs to return the sum cost of the discarded meals (discarded units × unit cost).
+        int discardedMealsCost = 0;
+
+        LocalTime timeLimit = timeStamp.minusMinutes(90);
+        if (mealDurability == MealDurability.MEDIUM) {
+            timeLimit = timeStamp.minusMinutes(120);
+        } else if (mealDurability == MealDurability.LONG) {
+            timeLimit = timeStamp.minusMinutes(180);
+        }
+
+        for (Meal meal : buffet.getMeals()) {
+            if (meal.getMealType().getDurability() == mealDurability && meal.getTimeStamp().isBefore(timeLimit)) {
+                buffet.removeMeal(meal);
+                discardedMealsCost += meal.getMealType().getCost();
+            }
+        }
+        wastedFood += discardedMealsCost;
+        return discardedMealsCost;
     }
 }
 
