@@ -12,6 +12,12 @@ public class BuffetModifier implements BuffetService {
     public LocalDate date;
     public List<BreakfastCycle> breakfastCycles;
 
+    public void listBuffet() {
+        for (Meal meal : buffet.meals()) {
+            System.out.println(meal.getMealType().toString() + " " + meal.getAmount() + " portions, made: " + meal.getTimeStamp().toString());
+        }
+    }
+
     public BuffetModifier(LocalDate date, List<BreakfastCycle> breakfastCycles, Buffet buffet) {
         this.date = date;
         this.breakfastCycles = breakfastCycles;

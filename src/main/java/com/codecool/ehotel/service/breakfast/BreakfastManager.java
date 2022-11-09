@@ -3,10 +3,7 @@ package com.codecool.ehotel.service.breakfast;
 import com.codecool.ehotel.model.*;
 import com.codecool.ehotel.service.buffet.BuffetModifier;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BreakfastManager {
 
@@ -34,7 +31,7 @@ public class BreakfastManager {
 
 
     public void serve(BreakfastCycle breakfastCycle) {
-        buffetModifier.refill(buffet, getOptimalPortions());
+        buffetModifier.refill(buffet, getOptimalPortions(breakfastCycleMap.get(breakfastCycle), breakfastCycle));
         boolean guestIsHappy;
 
         for (Guest guest : breakfastCycleMap.get(breakfastCycle)) {
@@ -59,9 +56,23 @@ public class BreakfastManager {
         }
     }
 
-    public List<Meal> getOptimalPortions() {
-
-        return new ArrayList<>();
+    public List<Meal> getOptimalPortions(List<Guest> guestsInActualBreakfastCycle, BreakfastCycle breakfastCycle) {
+        Set<MealType> likedMealTypes = new HashSet<>();
+        /*if (breakfastCycle.cycleStart().equals(LocalTime.parse("06:00"))) {
+            for (Guest guest : dailyGuests) {
+                likedMealTypes.addAll(guest.guestType().getMealPreferences());
+            }
+        }
+        else {*/
+            for (Guest guest : guestsInActualBreakfastCycle) {
+                likedMealTypes.addAll(guest.guestType().getMealPreferences());
+            }
+        //}
+        List<Meal> result = new ArrayList<>();
+        for (MealType mealType : likedMealTypes) {
+            result.add(new Meal(mealType, 2, breakfastCycle.cycleStart()));
+        }
+        return result;
     }
 
 }
