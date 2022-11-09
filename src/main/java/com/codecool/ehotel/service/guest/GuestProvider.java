@@ -33,12 +33,24 @@ public class GuestProvider implements GuestService {
         return LocalDate.ofEpochDay(randomDay);
     }
 
+    public List<Guest> getGuestListOnActualDate(List<Guest> guests, LocalDate actualDate) {
+        return guests.stream().filter(guest -> !actualDate.isAfter(guest.checkOut())
+                && !actualDate.isBefore(guest.checkIn())
+                && !actualDate.equals(guest.checkIn())).toList(); // when you check in you can't eat breakfast
+    }
+
+    public void listGuests(List<Guest> guests) {
+        for (Guest guest : guests) {
+            System.out.println(guest.name() + " " + guest.guestType() + " " + guest.checkIn() + " " + guest.checkOut());
+        }
+    }
+
     @Override
     public Guest generateRandomGuest(LocalDate seasonStart, LocalDate seasonEnd) {
         long daysBetween = DAYS.between(seasonStart, seasonEnd);
         LocalDate randomCheckInDate = randomCheckInOrOutDate(seasonStart, seasonEnd);
         LocalDate randomMaxCheckOutDate = randomCheckInDate.plusDays(daysBetween >= 7 ? 7 : daysBetween);
-        LocalDate randomCheckOutDate = randomCheckInOrOutDate(randomCheckInDate, randomMaxCheckOutDate);
+        LocalDate randomCheckOutDate = randomCheckInOrOutDate(randomCheckInDate.plusDays(1), randomMaxCheckOutDate);
         Guest newRandomGuest = new Guest(generateRandomGuestName(firstNames, lastnames), GuestType.randomGuestType(), randomCheckInDate, randomCheckOutDate);
         return newRandomGuest;
     }
