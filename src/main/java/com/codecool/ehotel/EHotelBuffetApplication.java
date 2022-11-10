@@ -20,14 +20,14 @@ public class EHotelBuffetApplication {
         // Initialize services
         GuestProvider guestProvider = new GuestProvider();
         List<BreakfastCycle> breakfastCycleList = List.of(
-                new BreakfastCycle(LocalTime.parse("06:00"), LocalTime.parse("06:30")),
-                new BreakfastCycle(LocalTime.parse("06:30"), LocalTime.parse("07:00")),
-                new BreakfastCycle(LocalTime.parse("07:00"), LocalTime.parse("07:30")),
-                new BreakfastCycle(LocalTime.parse("07:30"), LocalTime.parse("08:00")),
-                new BreakfastCycle(LocalTime.parse("08:00"), LocalTime.parse("08:30")),
-                new BreakfastCycle(LocalTime.parse("08:30"), LocalTime.parse("09:00")),
-                new BreakfastCycle(LocalTime.parse("09:00"), LocalTime.parse("09:30")),
-                new BreakfastCycle(LocalTime.parse("09:30"), LocalTime.parse("10:00"))
+                new BreakfastCycle(LocalTime.parse("06:00"), 30),
+                new BreakfastCycle(LocalTime.parse("06:30"), 30),
+                new BreakfastCycle(LocalTime.parse("07:00"), 30),
+                new BreakfastCycle(LocalTime.parse("07:30"), 30),
+                new BreakfastCycle(LocalTime.parse("08:00"), 30),
+                new BreakfastCycle(LocalTime.parse("08:30"), 30),
+                new BreakfastCycle(LocalTime.parse("09:00"), 30),
+                new BreakfastCycle(LocalTime.parse("09:30"), 30)
         );
         LocalDate actualDate = LocalDate.parse("2022-12-31");
         Buffet buffet = new Buffet(new ArrayList<>());
@@ -46,7 +46,7 @@ public class EHotelBuffetApplication {
         // Run breakfast buffet
         BreakfastManager breakfastManager = new BreakfastManager(dailyGuests, breakfastCycleMap, breakfastCycleList, buffetModifier);
         for (BreakfastCycle breakfastCycle : buffetModifier.breakfastCycles) {
-            System.out.println(breakfastCycle.cycleStart().toString() + "-" + breakfastCycle.cycleEnd().toString());
+            System.out.println(breakfastCycle.cycleStart.toString() + "-" + breakfastCycle.cycleEnd.toString());
             guestProvider.listGuests(breakfastCycleMap.get(breakfastCycle).stream().toList());
             buffetModifier.listBuffet();
             breakfastManager.serve(breakfastCycle);
