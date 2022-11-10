@@ -39,11 +39,6 @@ public class GuestProvider implements GuestService {
                 && !actualDate.equals(guest.checkIn())).toList(); // when you check in you can't eat breakfast
     }
 
-    public void listGuests(List<Guest> guests) {
-        for (Guest guest : guests) {
-            System.out.println(guest.name() + " " + guest.guestType() + " " + guest.checkIn() + " " + guest.checkOut());
-        }
-    }
 
     @Override
     public Guest generateRandomGuest(LocalDate seasonStart, LocalDate seasonEnd) {

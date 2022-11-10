@@ -6,6 +6,7 @@ import com.codecool.ehotel.model.Guest;
 import com.codecool.ehotel.service.breakfast.BreakfastManager;
 import com.codecool.ehotel.service.buffet.BuffetModifier;
 import com.codecool.ehotel.service.guest.GuestProvider;
+import com.codecool.ehotel.service.ui.Display;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -47,9 +48,12 @@ public class EHotelBuffetApplication {
         BreakfastManager breakfastManager = new BreakfastManager(dailyGuests, breakfastCycleMap, breakfastCycleList, buffetModifier);
         for (BreakfastCycle breakfastCycle : buffetModifier.breakfastCycles) {
             System.out.println(breakfastCycle.cycleStart.toString() + "-" + breakfastCycle.cycleEnd.toString());
-            guestProvider.listGuests(breakfastCycleMap.get(breakfastCycle).stream().toList());
-            buffetModifier.listBuffet();
+            Display.listGuests(breakfastCycleMap.get(breakfastCycle).stream().toList());
+            System.out.println("Buffet at " + breakfastCycle.cycleStart + ":");
+            Display.listBuffet(buffet);
             breakfastManager.serve(breakfastCycle);
+            System.out.println("Buffet at " + breakfastCycle.cycleEnd + ":");
+            Display.listBuffet(buffet);
             System.out.println("Happy guests: " + breakfastManager.happyGuests);
             System.out.println("Unhappy guests: " + breakfastManager.unHappyGuests);
             System.out.println("Wasted food: " + buffetModifier.wastedFood);
