@@ -8,7 +8,6 @@ import java.util.*;
 public class BreakfastManager {
 
     public List<Guest> dailyGuests;
-    public Buffet buffet;
     public Map<BreakfastCycle, List<Guest>> breakfastCycleMap;
     public List<BreakfastCycle> breakfastCycleList;
     private int businessGuests, touristGuests, kidGuests;
@@ -18,9 +17,8 @@ public class BreakfastManager {
 
     public int unHappyGuests = 0;
 
-    public BreakfastManager(List<Guest> dailyGuests, Buffet buffet, Map<BreakfastCycle, List<Guest>> breakfastCycleMap, List<BreakfastCycle> breakfastCycleList, BuffetModifier buffetModifier) {
+    public BreakfastManager(List<Guest> dailyGuests, Map<BreakfastCycle, List<Guest>> breakfastCycleMap, List<BreakfastCycle> breakfastCycleList, BuffetModifier buffetModifier) {
         this.dailyGuests = dailyGuests;
-        this.buffet = buffet;
         this.breakfastCycleMap = breakfastCycleMap;
         this.breakfastCycleList = breakfastCycleList;
         this.businessGuests = Collections.frequency(dailyGuests, GuestType.BUSINESS);
@@ -31,7 +29,7 @@ public class BreakfastManager {
 
 
     public void serve(BreakfastCycle breakfastCycle) {
-        buffetModifier.refill(buffet, getOptimalPortions(breakfastCycleMap.get(breakfastCycle), breakfastCycle));
+        buffetModifier.refill(getOptimalPortions(breakfastCycleMap.get(breakfastCycle), breakfastCycle));
         boolean guestIsHappy;
 
         for (Guest guest : breakfastCycleMap.get(breakfastCycle)) {
@@ -40,8 +38,8 @@ public class BreakfastManager {
             //mealPreferences.retainAll(buffet.getMeals().stream().map(Meal::getMealType).toList());
             for (MealType mealType : guest.guestType().getMealPreferences()) {
 
-                if (!guestIsHappy && buffet.getMeals().stream().map(Meal::getMealType).toList().contains(mealType)) {
-                    buffetModifier.consumeFreshest(buffet, mealType);
+                if (!guestIsHappy && buffetModifier.buffet.getMeals().stream().map(Meal::getMealType).toList().contains(mealType)) {
+                    buffetModifier.consumeFreshest(mealType);
                     happyGuests++;
                     guestIsHappy = true;
                 }
@@ -50,8 +48,8 @@ public class BreakfastManager {
                 unHappyGuests++;
             }
         }
-
-        for (Meal meal : buffet.getMeals()) {
+        List<Meal> meals = buffetModifier.buffet.getMeals();
+        for (Meal meal : meals) {
             buffetModifier.collectWaste(meal.getMealType().getDurability(), breakfastCycle.cycleEnd());
         }
     }

@@ -7,7 +7,7 @@ import java.time.LocalTime;
 import java.util.*;
 
 public class BuffetModifier implements BuffetService {
-    Buffet buffet;
+    public Buffet buffet;
     public int wastedFood = 0;
     public LocalDate date;
     public List<BreakfastCycle> breakfastCycles;
@@ -39,7 +39,7 @@ public class BuffetModifier implements BuffetService {
     }
 
     @Override
-    public Buffet refill(Buffet buffet, List<Meal> meals) {
+    public Buffet refill(List<Meal> meals) {
         for (Meal meal : meals) {
             buffet.addMeal(meal);
         }
@@ -47,7 +47,7 @@ public class BuffetModifier implements BuffetService {
     }
 
     @Override
-    public boolean consumeFreshest(Buffet buffet, MealType mealType) {
+    public boolean consumeFreshest(MealType mealType) {
         List<Meal> filteredMeals = buffet.findPortions(mealType);
         if (filteredMeals.size() > 0) {
             buffet.removeMeal(filteredMeals.get(0));
@@ -67,12 +67,16 @@ public class BuffetModifier implements BuffetService {
         } else if (mealDurability == MealDurability.LONG) {
             timeLimit = timeStamp.minusMinutes(180);
         }
-
+        List<Meal> wastedMeals = new ArrayList<>();
         for (Meal meal : buffet.getMeals()) {
             if (meal.getMealType().getDurability() == mealDurability && meal.getTimeStamp().isBefore(timeLimit) || meal.getTimeStamp().equals(timeLimit)) {
-                buffet.removeMeal(meal);
+                //buffet.removeMeal(meal);
+                wastedMeals.add(meal);
                 discardedMealsCost += meal.getMealType().getCost();
             }
+        }
+        for (Meal meal : wastedMeals) {
+            buffet.removeMeal(meal);
         }
         wastedFood += discardedMealsCost;
         return discardedMealsCost;
