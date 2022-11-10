@@ -22,7 +22,7 @@ public class Display {
     public static void listSimpleStatistics(int totalcost, int happyGuests, int unHappyGuests, int wastedFood) {
         System.out.println("Happy guests: " + happyGuests);
         System.out.println("Unhappy guests: " + unHappyGuests);
-        System.out.println("Wasted food: " + wastedFood);
+        System.out.println("Wasted foods cost: " + wastedFood);
         System.out.println("Total cost of the days breakfast meals: " + totalcost);
     }
 
