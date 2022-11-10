@@ -9,7 +9,7 @@ import java.util.*;
 public class BuffetModifier implements BuffetService {
     public Buffet buffet;
     public int wastedFood = 0;
-    public LocalDate date;
+    private final LocalDate date;
     public List<BreakfastCycle> breakfastCycles;
 
     public void listBuffet() {
@@ -32,10 +32,10 @@ public class BuffetModifier implements BuffetService {
         }
         for (Guest guest : guestsOnActualDate) {
             Random random = new Random();
-            breakfastCycleSetMap.get(breakfastCycles.get(random.nextInt(breakfastCyclesSize))).add(guest);
+            BreakfastCycle randomBreakfastCycle = breakfastCycles.get(random.nextInt(breakfastCyclesSize));
+            breakfastCycleSetMap.get(randomBreakfastCycle).add(guest);
         }
         return breakfastCycleSetMap;
-
     }
 
     @Override

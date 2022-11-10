@@ -12,7 +12,7 @@ public class BreakfastManager {
     public Map<BreakfastCycle, List<Guest>> breakfastCycleMap;
     public List<BreakfastCycle> breakfastCycleList;
     private int businessGuests, touristGuests, kidGuests;
-    private BuffetModifier buffetModifier;
+    private final BuffetModifier buffetModifier;
 
     public int happyGuests = 0;
 
@@ -50,12 +50,12 @@ public class BreakfastManager {
             }
         }
 
-        buffetModifier.collectWaste(breakfastCycle.cycleEnd());
+        buffetModifier.collectWaste(breakfastCycle.cycleEnd);
     }
 
     public List<Meal> getOptimalPortions(List<Guest> guestsInActualBreakfastCycle, BreakfastCycle breakfastCycle) {
         Set<MealType> likedMealTypes = new HashSet<>();
-        if (breakfastCycle.cycleStart().equals(LocalTime.parse("06:00"))) {
+        if (breakfastCycle.cycleStart.equals(LocalTime.parse("06:00"))) {
             for (Guest guest : dailyGuests) {
                 likedMealTypes.addAll(guest.guestType().getMealPreferences());
             }
@@ -66,7 +66,7 @@ public class BreakfastManager {
         }
         List<Meal> result = new ArrayList<>();
         for (MealType mealType : likedMealTypes) {
-            result.add(new Meal(mealType, 2, breakfastCycle.cycleStart()));
+            result.add(new Meal(mealType, 2, breakfastCycle.cycleStart));
         }
         return result;
     }
