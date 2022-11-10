@@ -49,8 +49,6 @@ public class EHotelBuffetApplication {
         for (BreakfastCycle breakfastCycle : buffetModifier.breakfastCycles) {
             System.out.println(breakfastCycle.cycleStart.toString() + "-" + breakfastCycle.cycleEnd.toString());
             Display.listGuests(breakfastCycleMap.get(breakfastCycle).stream().toList());
-            System.out.println("Buffet at " + breakfastCycle.cycleStart + ":");
-            Display.listBuffet(buffet);
             breakfastManager.serve(breakfastCycle);
             System.out.println("Buffet at " + breakfastCycle.cycleEnd + ":");
             Display.listBuffet(buffet);

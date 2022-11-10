@@ -4,9 +4,9 @@ import java.time.LocalTime;
 import java.util.Objects;
 
 public class Meal {
-    private MealType mealType;
+    private final MealType mealType;
     private int amount;
-    private LocalTime timeStamp;
+    private final LocalTime timeStamp;
 
     public Meal(MealType mealType, int amount, LocalTime timeStamp) {
         this.mealType = mealType;
@@ -18,32 +18,16 @@ public class Meal {
         return mealType;
     }
 
-    public void setMealType(MealType mealType) {
-        this.mealType = mealType;
-    }
-
     public int getAmount() {
         return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
     }
 
     public LocalTime getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(LocalTime timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-
-    public void increaseAmount(int number) {
-        this.amount += number;
-    }
-
-    public void decreaseAmount(int number) {
-        this.amount -= number;
+    public void decreaseAmount() {
+        this.amount--;
     }
 
     @Override
