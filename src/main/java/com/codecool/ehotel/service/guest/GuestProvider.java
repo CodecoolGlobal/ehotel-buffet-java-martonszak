@@ -4,10 +4,7 @@ import com.codecool.ehotel.model.Guest;
 import com.codecool.ehotel.model.GuestType;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -22,8 +19,7 @@ public class GuestProvider implements GuestService {
         Random random = new Random();
         String firstName = firstNames.get(random.nextInt(firstNames.size()));
         String lastName = lastnames.get(random.nextInt(lastnames.size()));
-        String randomName = firstName + " " + lastName;
-        return randomName;
+        return firstName + " " + lastName;
     }
 
     private LocalDate randomCheckInOrOutDate(LocalDate seasonStart, LocalDate seasonEnd) {
@@ -39,15 +35,13 @@ public class GuestProvider implements GuestService {
                 && !actualDate.equals(guest.checkIn())).toList(); // when you check in you can't eat breakfast
     }
 
-
     @Override
     public Guest generateRandomGuest(LocalDate seasonStart, LocalDate seasonEnd) {
         long daysBetween = DAYS.between(seasonStart, seasonEnd);
         LocalDate randomCheckInDate = randomCheckInOrOutDate(seasonStart, seasonEnd);
         LocalDate randomMaxCheckOutDate = randomCheckInDate.plusDays(daysBetween >= 7 ? 7 : daysBetween);
         LocalDate randomCheckOutDate = randomCheckInOrOutDate(randomCheckInDate.plusDays(1), randomMaxCheckOutDate);
-        Guest newRandomGuest = new Guest(generateRandomGuestName(firstNames, lastnames), GuestType.randomGuestType(), randomCheckInDate, randomCheckOutDate);
-        return newRandomGuest;
+        return new Guest(generateRandomGuestName(firstNames, lastnames), GuestType.randomGuestType(), randomCheckInDate, randomCheckOutDate);
     }
 
     @Override
@@ -60,4 +54,13 @@ public class GuestProvider implements GuestService {
         }
         return guestsOnGivenDate;
     }
+
+    public List<Guest> generateGuests(int answerGuestsNumber, LocalDate seasonStart, LocalDate seasonEnd) {
+        List<Guest> guests = new ArrayList<>();
+        for (int i = 0; i < answerGuestsNumber; i++) {
+            guests.add(generateRandomGuest(seasonStart, seasonEnd));
+        }
+        return guests;
+    }
+
 }

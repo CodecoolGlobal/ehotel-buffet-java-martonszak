@@ -7,6 +7,7 @@ import com.codecool.ehotel.service.breakfast.BreakfastManager;
 import com.codecool.ehotel.service.buffet.BuffetModifier;
 import com.codecool.ehotel.service.guest.GuestProvider;
 import com.codecool.ehotel.service.ui.Display;
+import com.codecool.ehotel.service.ui.Input;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -19,7 +20,9 @@ public class EHotelBuffetApplication {
     public static void main(String[] args) {
 
         // Initialize services
-        GuestProvider guestProvider = new GuestProvider();
+        LocalDate actualDate = LocalDate.parse("2022-12-31"), seasonStart = LocalDate.parse("2022-12-28"), seasonEnd = LocalDate.parse("2023-01-03");
+        Input input = new Input();
+        Buffet buffet = new Buffet(new ArrayList<>());
         List<BreakfastCycle> breakfastCycleList = List.of(
                 new BreakfastCycle(LocalTime.parse("06:00"), 30),
                 new BreakfastCycle(LocalTime.parse("06:30"), 30),
@@ -30,31 +33,37 @@ public class EHotelBuffetApplication {
                 new BreakfastCycle(LocalTime.parse("09:00"), 30),
                 new BreakfastCycle(LocalTime.parse("09:30"), 30)
         );
-        LocalDate actualDate = LocalDate.parse("2022-12-31");
-        Buffet buffet = new Buffet(new ArrayList<>());
         BuffetModifier buffetModifier = new BuffetModifier(breakfastCycleList, buffet);
-        // Generate guests for the season
-        List<Guest> guests = new ArrayList<>();
-        int guestNumber = 200;
-        LocalDate seasonStart = LocalDate.parse("2022-12-28");
-        LocalDate seasonEnd = LocalDate.parse("2023-01-03");
-        for (int i = 0; i < guestNumber; i++) {
-            guests.add(guestProvider.generateRandomGuest(seasonStart, seasonEnd));
-        }
+        GuestProvider guestProvider = new GuestProvider();
 
-        List<Guest> dailyGuests = guestProvider.getGuestListOnActualDate(guests, actualDate);
+
+        // Program start with questions for user input
+
+        Display.printLogo();
+        Display.printText("Please choose which statistics you want to see, DETAILED od SIMPLE!");
+        Display.printText("Type in DETAILED or SIMPLE below.");
+        String answer = input.getTextInput();
+        Display.printText("Please type in the number of guests you want to make the simulation with:");
+        int answerGuestsNumber = input.getNumberInput();
+        List<Guest> allGuests = guestProvider.generateGuests(answerGuestsNumber, seasonStart, seasonEnd);
+        List<Guest> dailyGuests = guestProvider.getGuestListOnActualDate(allGuests, actualDate);
         Map<BreakfastCycle, List<Guest>> breakfastCycleMap = buffetModifier.generateGuestsInBreakfastCycles(dailyGuests);
-        // Run breakfast buffet
         BreakfastManager breakfastManager = new BreakfastManager(dailyGuests, breakfastCycleMap, breakfastCycleList, buffetModifier);
-        for (BreakfastCycle breakfastCycle : buffetModifier.breakfastCycles) {
-            System.out.println(breakfastCycle.cycleStart.toString() + "-" + breakfastCycle.cycleEnd.toString());
-            Display.listGuests(breakfastCycleMap.get(breakfastCycle).stream().toList());
-            breakfastManager.serve(breakfastCycle);
-            System.out.println("Buffet at " + breakfastCycle.cycleEnd + ":");
-            Display.listBuffet(buffet);
-            System.out.println("Happy guests: " + breakfastManager.happyGuests);
-            System.out.println("Unhappy guests: " + breakfastManager.unHappyGuests);
-            System.out.println("Wasted food: " + buffetModifier.wastedFood);
+
+        if (answer.equalsIgnoreCase("simple")) {
+            for (BreakfastCycle breakfastCycle : buffetModifier.breakfastCycles) {
+                breakfastManager.serve(breakfastCycle);
+            }
+            Display.listSimpleStatistics(buffetModifier.getRefillCost(), breakfastManager.getHappyGuests(), breakfastManager.getUnHappyGuests(), buffetModifier.getWastedFood());
+        } else if (answer.equalsIgnoreCase("detailed")) {
+            for (BreakfastCycle breakfastCycle : buffetModifier.breakfastCycles) {
+                System.out.println(breakfastCycle.cycleStart.toString() + "-" + breakfastCycle.cycleEnd.toString());
+                Display.listGuests(breakfastCycleMap.get(breakfastCycle).stream().toList());
+                breakfastManager.serve(breakfastCycle);
+                System.out.println("Buffet at " + breakfastCycle.cycleEnd + ":");
+                Display.listSimpleStatistics(buffetModifier.getRefillCost(), breakfastManager.getHappyGuests(), breakfastManager.getUnHappyGuests(), buffetModifier.getWastedFood());
+
+            }
         }
     }
 }
