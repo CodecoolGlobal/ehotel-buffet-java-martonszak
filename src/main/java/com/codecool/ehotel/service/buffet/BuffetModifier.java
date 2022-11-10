@@ -2,19 +2,16 @@ package com.codecool.ehotel.service.buffet;
 
 import com.codecool.ehotel.model.*;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
 public class BuffetModifier implements BuffetService {
     public Buffet buffet;
     public int wastedFood = 0;
-    private final LocalDate date;
     public List<BreakfastCycle> breakfastCycles;
 
 
-    public BuffetModifier(LocalDate date, List<BreakfastCycle> breakfastCycles, Buffet buffet) {
-        this.date = date;
+    public BuffetModifier(List<BreakfastCycle> breakfastCycles, Buffet buffet) {
         this.breakfastCycles = breakfastCycles;
         this.buffet = buffet;
     }
@@ -65,13 +62,13 @@ public class BuffetModifier implements BuffetService {
                 timeLimit = breakfastCycleEnd.minusMinutes(180);
             }
 
-            if (meal.getTimeStamp().isBefore(timeLimit) || meal.getTimeStamp().equals(timeLimit)) {
+            if (meal.getTimeStamp().isBefore(timeLimit) || meal.getTimeStamp().equals(timeLimit) || breakfastCycleEnd.equals(LocalTime.parse("10:00"))) {
                 wastedMeals.add(meal);
                 discardedMealsCost += meal.getMealType().getCost();
             }
         }
         for (Meal meal : wastedMeals) {
-            buffet.removeMeal(meal);
+            buffet.trashMeal(meal);
         }
         wastedFood += discardedMealsCost;
         return discardedMealsCost;
