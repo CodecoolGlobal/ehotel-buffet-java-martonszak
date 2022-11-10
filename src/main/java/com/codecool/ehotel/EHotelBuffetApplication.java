@@ -32,10 +32,10 @@ public class EHotelBuffetApplication {
         );
         LocalDate actualDate = LocalDate.parse("2022-12-31");
         Buffet buffet = new Buffet(new ArrayList<>());
-        BuffetModifier buffetModifier = new BuffetModifier(actualDate, breakfastCycleList, buffet);
+        BuffetModifier buffetModifier = new BuffetModifier(breakfastCycleList, buffet);
         // Generate guests for the season
         List<Guest> guests = new ArrayList<>();
-        int guestNumber = 50;
+        int guestNumber = 200;
         LocalDate seasonStart = LocalDate.parse("2022-12-28");
         LocalDate seasonEnd = LocalDate.parse("2023-01-03");
         for (int i = 0; i < guestNumber; i++) {

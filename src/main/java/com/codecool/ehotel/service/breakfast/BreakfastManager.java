@@ -50,6 +50,11 @@ public class BreakfastManager {
         buffetModifier.collectWaste(breakfastCycle.cycleEnd);
     }
 
+    public int getIdealAmount() {
+        double numberOfGuests = dailyGuests.size();
+        return (int) Math.round(numberOfGuests/40);
+    }
+
     public List<Meal> getOptimalPortions(List<Guest> guestsInActualBreakfastCycle, BreakfastCycle breakfastCycle) {
         Set<MealType> likedMealTypes = new HashSet<>();
         if (breakfastCycle.cycleStart.equals(LocalTime.parse("06:00"))) {
@@ -63,7 +68,9 @@ public class BreakfastManager {
         }
         List<Meal> result = new ArrayList<>();
         for (MealType mealType : likedMealTypes) {
-            result.add(new Meal(mealType, 1, breakfastCycle.cycleStart));
+            if (!buffetModifier.buffet.meals().stream().map(Meal::getMealType).toList().contains(mealType)) {
+                result.add(new Meal(mealType, getIdealAmount(), breakfastCycle.cycleStart));
+            }
         }
         return result;
     }
