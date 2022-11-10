@@ -71,13 +71,13 @@ public class BuffetModifier implements BuffetService {
                 timeLimit = breakfastCycleEnd.minusMinutes(180);
             }
 
-            if (meal.getTimeStamp().isBefore(timeLimit) || meal.getTimeStamp().equals(timeLimit)) {
+            if (meal.getTimeStamp().isBefore(timeLimit) || meal.getTimeStamp().equals(timeLimit) || breakfastCycleEnd.equals(LocalTime.parse("10:00"))) {
                 wastedMeals.add(meal);
                 discardedMealsCost += meal.getMealType().getCost();
             }
         }
         for (Meal meal : wastedMeals) {
-            buffet.removeMeal(meal);
+            buffet.trashMeal(meal);
         }
         wastedFood += discardedMealsCost;
         return discardedMealsCost;

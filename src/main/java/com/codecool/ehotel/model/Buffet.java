@@ -31,4 +31,8 @@ public record Buffet(List<Meal> meals) {
             meals.removeIf(element -> element.equals(meal));
         }
     }
+
+    public void trashMeal(Meal meal) {
+        meals.removeIf(element -> element.equals(meal));
+    }
 }
