@@ -9,9 +9,9 @@ import java.time.LocalTime;
 import java.util.List;
 
 public interface BuffetService {
-    Buffet refill(Buffet buffet, List<Meal> meals);
+    Buffet refill(List<Meal> meals);
 
-    boolean consumeFreshest(Buffet buffet, MealType mealType);
+    boolean consumeFreshest(MealType mealType);
 
-    int collectWaste(MealDurability mealDurability, LocalTime timeStamp); //Freshness wtf? :D
+    int collectWaste(LocalTime breakfastCycleEnd);
 }

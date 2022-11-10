@@ -44,7 +44,7 @@ public class EHotelBuffetApplication {
         List<Guest> dailyGuests = guestProvider.getGuestListOnActualDate(guests, actualDate);
         Map<BreakfastCycle, List<Guest>> breakfastCycleMap = buffetModifier.generateGuestsInBreakfastCycles(dailyGuests);
         // Run breakfast buffet
-        BreakfastManager breakfastManager = new BreakfastManager(dailyGuests, buffet, breakfastCycleMap, breakfastCycleList, buffetModifier);
+        BreakfastManager breakfastManager = new BreakfastManager(dailyGuests, breakfastCycleMap, breakfastCycleList, buffetModifier);
         for (BreakfastCycle breakfastCycle : buffetModifier.breakfastCycles) {
             System.out.println(breakfastCycle.cycleStart().toString() + "-" + breakfastCycle.cycleEnd().toString());
             guestProvider.listGuests(breakfastCycleMap.get(breakfastCycle).stream().toList());

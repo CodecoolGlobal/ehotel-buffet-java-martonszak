@@ -3,12 +3,12 @@ package com.codecool.ehotel.service.breakfast;
 import com.codecool.ehotel.model.*;
 import com.codecool.ehotel.service.buffet.BuffetModifier;
 
+import java.time.LocalTime;
 import java.util.*;
 
 public class BreakfastManager {
 
     public List<Guest> dailyGuests;
-    public Buffet buffet;
     public Map<BreakfastCycle, List<Guest>> breakfastCycleMap;
     public List<BreakfastCycle> breakfastCycleList;
     private int businessGuests, touristGuests, kidGuests;
@@ -18,9 +18,8 @@ public class BreakfastManager {
 
     public int unHappyGuests = 0;
 
-    public BreakfastManager(List<Guest> dailyGuests, Buffet buffet, Map<BreakfastCycle, List<Guest>> breakfastCycleMap, List<BreakfastCycle> breakfastCycleList, BuffetModifier buffetModifier) {
+    public BreakfastManager(List<Guest> dailyGuests, Map<BreakfastCycle, List<Guest>> breakfastCycleMap, List<BreakfastCycle> breakfastCycleList, BuffetModifier buffetModifier) {
         this.dailyGuests = dailyGuests;
-        this.buffet = buffet;
         this.breakfastCycleMap = breakfastCycleMap;
         this.breakfastCycleList = breakfastCycleList;
         this.businessGuests = Collections.frequency(dailyGuests, GuestType.BUSINESS);
@@ -31,7 +30,7 @@ public class BreakfastManager {
 
 
     public void serve(BreakfastCycle breakfastCycle) {
-        buffetModifier.refill(buffet, getOptimalPortions(breakfastCycleMap.get(breakfastCycle), breakfastCycle));
+        buffetModifier.refill(getOptimalPortions(breakfastCycleMap.get(breakfastCycle), breakfastCycle));
         boolean guestIsHappy;
 
         for (Guest guest : breakfastCycleMap.get(breakfastCycle)) {
@@ -40,8 +39,8 @@ public class BreakfastManager {
             //mealPreferences.retainAll(buffet.getMeals().stream().map(Meal::getMealType).toList());
             for (MealType mealType : guest.guestType().getMealPreferences()) {
 
-                if (!guestIsHappy && buffet.getMeals().stream().map(Meal::getMealType).toList().contains(mealType)) {
-                    buffetModifier.consumeFreshest(buffet, mealType);
+                if (!guestIsHappy && buffetModifier.buffet.getMeals().stream().map(Meal::getMealType).toList().contains(mealType)) {
+                    buffetModifier.consumeFreshest(mealType);
                     happyGuests++;
                     guestIsHappy = true;
                 }
@@ -51,23 +50,20 @@ public class BreakfastManager {
             }
         }
 
-        for (Meal meal : buffet.getMeals()) {
-            buffetModifier.collectWaste(meal.getMealType().getDurability(), breakfastCycle.cycleEnd());
-        }
+        buffetModifier.collectWaste(breakfastCycle.cycleEnd());
     }
 
     public List<Meal> getOptimalPortions(List<Guest> guestsInActualBreakfastCycle, BreakfastCycle breakfastCycle) {
         Set<MealType> likedMealTypes = new HashSet<>();
-        /*if (breakfastCycle.cycleStart().equals(LocalTime.parse("06:00"))) {
+        if (breakfastCycle.cycleStart().equals(LocalTime.parse("06:00"))) {
             for (Guest guest : dailyGuests) {
                 likedMealTypes.addAll(guest.guestType().getMealPreferences());
             }
-        }
-        else {*/
+        } else {
             for (Guest guest : guestsInActualBreakfastCycle) {
                 likedMealTypes.addAll(guest.guestType().getMealPreferences());
             }
-        //}
+        }
         List<Meal> result = new ArrayList<>();
         for (MealType mealType : likedMealTypes) {
             result.add(new Meal(mealType, 2, breakfastCycle.cycleStart()));
