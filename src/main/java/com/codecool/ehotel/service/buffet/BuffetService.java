@@ -13,5 +13,5 @@ public interface BuffetService {
 
     boolean consumeFreshest(MealType mealType);
 
-    int collectWaste(MealDurability mealDurability, LocalTime timeStamp); //Freshness wtf? :D
+    int collectWaste(LocalTime breakfastCycleEnd);
 }

@@ -3,6 +3,7 @@ package com.codecool.ehotel.service.breakfast;
 import com.codecool.ehotel.model.*;
 import com.codecool.ehotel.service.buffet.BuffetModifier;
 
+import java.time.LocalTime;
 import java.util.*;
 
 public class BreakfastManager {
@@ -48,24 +49,21 @@ public class BreakfastManager {
                 unHappyGuests++;
             }
         }
-        List<Meal> meals = buffetModifier.buffet.getMeals();
-        for (Meal meal : meals) {
-            buffetModifier.collectWaste(meal.getMealType().getDurability(), breakfastCycle.cycleEnd());
-        }
+
+        buffetModifier.collectWaste(breakfastCycle.cycleEnd());
     }
 
     public List<Meal> getOptimalPortions(List<Guest> guestsInActualBreakfastCycle, BreakfastCycle breakfastCycle) {
         Set<MealType> likedMealTypes = new HashSet<>();
-        /*if (breakfastCycle.cycleStart().equals(LocalTime.parse("06:00"))) {
+        if (breakfastCycle.cycleStart().equals(LocalTime.parse("06:00"))) {
             for (Guest guest : dailyGuests) {
                 likedMealTypes.addAll(guest.guestType().getMealPreferences());
             }
-        }
-        else {*/
+        } else {
             for (Guest guest : guestsInActualBreakfastCycle) {
                 likedMealTypes.addAll(guest.guestType().getMealPreferences());
             }
-        //}
+        }
         List<Meal> result = new ArrayList<>();
         for (MealType mealType : likedMealTypes) {
             result.add(new Meal(mealType, 2, breakfastCycle.cycleStart()));

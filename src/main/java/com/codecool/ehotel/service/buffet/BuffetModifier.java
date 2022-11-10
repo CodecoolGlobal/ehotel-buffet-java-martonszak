@@ -57,20 +57,20 @@ public class BuffetModifier implements BuffetService {
     }
 
     @Override
-    public int collectWaste(MealDurability mealDurability, LocalTime timeStamp) {
+    public int collectWaste(LocalTime breakfastCycleEnd) {
 
         int discardedMealsCost = 0;
 
-        LocalTime timeLimit = timeStamp.minusMinutes(90);
-        if (mealDurability == MealDurability.MEDIUM) {
-            timeLimit = timeStamp.minusMinutes(120);
-        } else if (mealDurability == MealDurability.LONG) {
-            timeLimit = timeStamp.minusMinutes(180);
-        }
         List<Meal> wastedMeals = new ArrayList<>();
         for (Meal meal : buffet.getMeals()) {
-            if (meal.getMealType().getDurability() == mealDurability && meal.getTimeStamp().isBefore(timeLimit) || meal.getTimeStamp().equals(timeLimit)) {
-                //buffet.removeMeal(meal);
+            LocalTime timeLimit = breakfastCycleEnd.minusMinutes(90);
+            if (meal.getMealType().getDurability() == MealDurability.MEDIUM) {
+                timeLimit = breakfastCycleEnd.minusMinutes(120);
+            } else if (meal.getMealType().getDurability() == MealDurability.LONG) {
+                timeLimit = breakfastCycleEnd.minusMinutes(180);
+            }
+
+            if (meal.getTimeStamp().isBefore(timeLimit) || meal.getTimeStamp().equals(timeLimit)) {
                 wastedMeals.add(meal);
                 discardedMealsCost += meal.getMealType().getCost();
             }
