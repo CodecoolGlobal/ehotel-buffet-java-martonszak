@@ -2,7 +2,6 @@ package com.codecool.ehotel.service.breakfast;
 
 import com.codecool.ehotel.model.*;
 import com.codecool.ehotel.service.buffet.BuffetModifier;
-import com.codecool.ehotel.service.ui.Display;
 
 import java.time.LocalTime;
 import java.util.*;
@@ -28,8 +27,6 @@ public class BreakfastManager {
 
     public void serve(BreakfastCycle breakfastCycle) {
         buffetModifier.refill(getOptimalPortions(breakfastCycleMap.get(breakfastCycle), breakfastCycle));
-        System.out.println("Buffet at " + breakfastCycle.cycleStart + ".");
-        Display.listBuffet(buffetModifier.buffet);
         boolean guestIsHappy = false;
 
         for (Guest guest : breakfastCycleMap.get(breakfastCycle)) {
@@ -68,4 +65,11 @@ public class BreakfastManager {
         return result;
     }
 
+    public int getHappyGuests() {
+        return happyGuests;
+    }
+
+    public int getUnHappyGuests() {
+        return unHappyGuests;
+    }
 }

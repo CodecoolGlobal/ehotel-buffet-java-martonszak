@@ -2,21 +2,22 @@ package com.codecool.ehotel.service.buffet;
 
 import com.codecool.ehotel.model.*;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
 public class BuffetModifier implements BuffetService {
     public Buffet buffet;
     public int wastedFood = 0;
-    private final LocalDate date;
     public List<BreakfastCycle> breakfastCycles;
+    int refillCost = 0;
 
-
-    public BuffetModifier(LocalDate date, List<BreakfastCycle> breakfastCycles, Buffet buffet) {
-        this.date = date;
+    public BuffetModifier(List<BreakfastCycle> breakfastCycles, Buffet buffet) {
         this.breakfastCycles = breakfastCycles;
         this.buffet = buffet;
+    }
+
+    public int getRefillCost() {
+        return refillCost;
     }
 
     public Map<BreakfastCycle, List<Guest>> generateGuestsInBreakfastCycles(List<Guest> guestsOnActualDate) {
@@ -38,6 +39,11 @@ public class BuffetModifier implements BuffetService {
         for (Meal meal : meals) {
             buffet.addMeal(meal);
         }
+
+        for (Meal meal : meals) {
+            refillCost += meal.getMealType().getCost() * meal.getAmount();
+        }
+
         return buffet;
     }
 
@@ -75,6 +81,10 @@ public class BuffetModifier implements BuffetService {
         }
         wastedFood += discardedMealsCost;
         return discardedMealsCost;
+    }
+
+    public int getWastedFood() {
+        return wastedFood;
     }
 }
 
