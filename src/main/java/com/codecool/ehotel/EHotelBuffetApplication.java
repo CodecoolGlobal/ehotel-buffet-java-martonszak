@@ -36,7 +36,6 @@ public class EHotelBuffetApplication {
         BuffetModifier buffetModifier = new BuffetModifier(breakfastCycleList, buffet);
         GuestProvider guestProvider = new GuestProvider();
 
-
         // Program start with questions for user input
 
         Display.printLogo();

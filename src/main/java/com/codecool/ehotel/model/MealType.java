@@ -15,8 +15,8 @@ public enum MealType {
     CEREAL(30, LONG),
     MILK(10, LONG);
 
-    private int cost;
-    private MealDurability mealDurability;
+    private final int cost;
+    private final MealDurability mealDurability;
 
     MealType(int cost, MealDurability mealDurability) {
         this.cost = cost;

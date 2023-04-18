@@ -24,16 +24,13 @@ public class BreakfastManager {
         this.buffetModifier = buffetModifier;
     }
 
-
     public void serve(BreakfastCycle breakfastCycle) {
         buffetModifier.refill(getOptimalPortions(breakfastCycleMap.get(breakfastCycle), breakfastCycle));
         boolean guestIsHappy = false;
 
         for (Guest guest : breakfastCycleMap.get(breakfastCycle)) {
-
             guestIsHappy = false;
             for (MealType mealType : guest.guestType().getMealPreferences()) {
-
                 if (!guestIsHappy && buffetModifier.buffet.getMeals().stream().map(Meal::getMealType).toList().contains(mealType)) {
                     guestIsHappy = buffetModifier.consumeFreshest(mealType);
                     happyGuests++;
@@ -43,13 +40,12 @@ public class BreakfastManager {
                 unHappyGuests++;
             }
         }
-
         buffetModifier.collectWaste(breakfastCycle.cycleEnd);
     }
 
     public int getIdealAmount() {
         double numberOfGuests = dailyGuests.size();
-        return (int) Math.round(numberOfGuests/40);
+        return (int) Math.round(numberOfGuests);
     }
 
     public List<Meal> getOptimalPortions(List<Guest> guestsInActualBreakfastCycle, BreakfastCycle breakfastCycle) {

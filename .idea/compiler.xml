@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="ehotel" />
+        <module name="ehotel-buffet-java-martonszak" />
       </profile>
     </annotationProcessing>
   </component>

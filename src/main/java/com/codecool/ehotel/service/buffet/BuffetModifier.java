@@ -43,7 +43,6 @@ public class BuffetModifier implements BuffetService {
         for (Meal meal : meals) {
             refillCost += meal.getMealType().getCost() * meal.getAmount();
         }
-
         return buffet;
     }
 
